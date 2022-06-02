@@ -43,7 +43,7 @@ export default function SearchModal({ onClose }) {
 
     return (
         <div className="modal-container">
-            <div className='modal-content text-white fade-animation'>
+            <div className='modal-content text-white fade-animation h-[90vh] max-h-[600px]'>
                 <div className='w-full sticky top-0 bg-[#16182a]'>
                     <div className='flex justify-between w-full text-xl mb-5'>
                         <p className='font-semibold'>Search for country</p>

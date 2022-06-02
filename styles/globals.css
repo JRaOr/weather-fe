@@ -39,9 +39,7 @@
 .modal-content{
     background-color: #16182a;
     max-width: 400px;
-    max-height: 600px;
     width: 100%;
-    height: 90%;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

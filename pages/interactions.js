@@ -7,7 +7,11 @@ import { FcGoogle } from "react-icons/fc"
 import { SiBattledotnet } from "react-icons/si"
 import { useRouter } from "next/router";
 import Social from "../components/Social";
-
+import { IoMdExit } from "react-icons/io";
+import countries from "../public/countries.json";
+import axios from "axios";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import AddModal from "../components/AddModal";
 export async function getServerSideProps(){
     const providers = await getProviders();
     return {
@@ -20,8 +24,11 @@ export default function Interactions ({ providers }) {
     const [showLoading, setShowLoading] = useState(true);
     const [searchModal, setSearchModal] = useState(false);
     const session = useSession()
+    const [selectedCountry, setSelectedCountry] = useState('Spain');
     const router = useRouter()
-
+    const [atractions, setAtractions] = useState([]);
+    const [normalCountries, setNormalCountries] = useState([]);
+    const [addModal, setAddModal] = useState(false);
     const logos = {
         'Google': <FcGoogle className='' />,
         'Battle.net': <SiBattledotnet className='' />
@@ -32,24 +39,87 @@ export default function Interactions ({ providers }) {
     }
 
     useEffect(() => {
-
+        let countries_list = [];
+        Object.keys(countries).map(key => {
+            countries_list.push({
+                name: countries[key],
+                key: countries[key].toLowerCase()
+            });
+        });
+        setNormalCountries(countries_list);
     },[])
 
     useEffect(() => {
+        console.log(session)
         if(session.status !== 'loading'){
             setShowLoading(false)
         }
     },[session])
 
+    useEffect(() => {
+        getData();
+    }, [selectedCountry])
+
+    async function getData () {
+        if(selectedCountry){
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_API}/atractions/${selectedCountry.toLowerCase()}`);
+            console.log(response.data)
+            setAtractions(response.data.atractions);
+        }
+    }
+
+    function handleAddModal() {
+        setAddModal(!addModal)
+    }
+
+    function handleSuccess() {
+        getData();
+        setAddModal(false)
+    }
+
     return (
         <>
             {showLoading ? <Loading/> : 
-            <main className="w-[100vw] h-[100vh] relative bg-[#0b0c1e] p-5 flex flex-col text-white">
+            <main className="w-[100vw] h-[100vh] relative bg-[#0f101a] p-5 flex flex-col text-white">
                 {session.status === 'authenticated' ?
-                <section className="grow">
-                        <button onClick={()=> signOut()}>
-                            Sign Out
-                        </button>
+                <section className="grow flex flex-col items-center w-full">
+                    <div className="flex items-center flex-col w-full">
+                        <div className="relative">
+                            <img src={session.data.user.image} alt="" className="w-32 h-32 object-contain rounded-full overflow-hidden"/>
+                            <button className="text-red-500 absolute right-0 bottom-0 rounded-full bg-white h-8 w-8 flex items-center justify-center text-xl" onClick={()=> signOut()}>
+                                <IoMdExit/>
+                            </button>
+                        </div>
+                        <p className="my-4 font-semibold  text-xl">{session.data.user.name}</p>
+                        <div className="border-b-[1px] w-full" />
+                        <select value={selectedCountry} onChange={(e)=>{
+                            setSelectedCountry(e.target.value)
+                        }} className="w-full my-4 bg-transparent border-2 py-2 rounded-md focus:border-sky-400">
+                            {normalCountries.map((country, index) => (
+                                <option selected={selectedCountry === country.name}  className="bg-[#292626] py-2 px-5" key={index} value={country.name}>{country.name}</option>
+                            ))}
+                        </select>
+                        <div>
+                            {atractions.map((atraction, index) => (
+                                <div key={index} className="flex items-start my-4">
+                                    <div className="w-32 h-32">
+                                        <img src={`https://weather-app-midu.s3.amazonaws.com/places/${atraction.file}`} alt="" className="w-32 h-32 object-contain"/>
+                                    </div>
+                                    <div className="px-2">
+                                        <p className="font-semibold text-xl">{atraction.name}</p>
+                                        <p>{atraction.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                            
+                        </div>
+                        {selectedCountry && 
+                            <button onClick={() => {
+                                setAddModal(true)
+                            }} className="text-2xl text-white hover:text-sky-600 transition-all ease-in-out duration-300">
+                                <IoMdAddCircleOutline/>
+                            </button>}
+                    </div>
                 </section>:
                 <section className="grow flex flex-col items-center justify-center">
                     <img src='/rainthunder.svg'/>
@@ -67,6 +137,7 @@ export default function Interactions ({ providers }) {
                     <div className="border-b-[1px] w-full max-w-[300px] mb-5"/>
                     <Social/>
                 </section>}
+                {addModal && <AddModal onSuccess={handleSuccess} onClose={handleAddModal} country={selectedCountry} user={session.data.user}/>}
                 <Menu toggleSearch={toggleSearch}/>
                 {searchModal && <SearchModal onClose={ () => setSearchModal(false) }/>}
             </main>}
