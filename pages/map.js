@@ -20,7 +20,6 @@ export default function MapLocation () {
     const [marker, setMarker] = useState(null)
     const router = useRouter();
     useEffect(() => {
-        //get location
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
