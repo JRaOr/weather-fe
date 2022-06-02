@@ -82,7 +82,7 @@ export default function Interactions ({ providers }) {
             {showLoading ? <Loading/> : 
             <main className="w-[100vw] h-[100vh] relative bg-[#0f101a] p-5 flex flex-col text-white">
                 {session.status === 'authenticated' ?
-                <section className="grow flex flex-col items-center w-full">
+                <section className="grow flex flex-col items-center w-full overflow-auto py-10">
                     <div className="flex items-center flex-col w-full">
                         <div className="relative">
                             <img src={session.data.user.image} alt="" className="w-32 h-32 object-contain rounded-full overflow-hidden"/>
@@ -101,11 +101,9 @@ export default function Interactions ({ providers }) {
                         </select>
                         <div>
                             {atractions.map((atraction, index) => (
-                                <div key={index} className="flex items-start my-4">
-                                    <div className="w-32 h-32">
-                                        <img src={`https://weather-app-midu.s3.amazonaws.com/places/${atraction.file}`} alt="" className="w-32 h-32 object-contain"/>
-                                    </div>
-                                    <div className="px-2">
+                                <div key={index} className="flex items-center my-4 w-full p-2 bg-[#11182e] rounded-md">
+                                    <img src={`https://weather-app-midu.s3.amazonaws.com/places/${atraction.file}`} alt="" className="image-add"/>
+                                    <div className="px-2 text-left">
                                         <p className="font-semibold text-xl">{atraction.name}</p>
                                         <p>{atraction.description}</p>
                                     </div>

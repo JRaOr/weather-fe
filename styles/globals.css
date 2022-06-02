@@ -60,3 +60,9 @@
         transform: translateY(0px);
     }
 }
+.image-add {
+    height: 120px !important;
+    width: 100px !important;
+    object-fit: contain;
+    min-width: 100px !important;
+}
