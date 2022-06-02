@@ -12,6 +12,7 @@ import countries from "../public/countries.json";
 import axios from "axios";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import AddModal from "../components/AddModal";
+import Link from "next/link";
 export async function getServerSideProps(){
     const providers = await getProviders();
     return {
@@ -99,6 +100,10 @@ export default function Interactions ({ providers }) {
                                 <option selected={selectedCountry === country.name}  className="bg-[#292626] py-2 px-5" key={index} value={country.name}>{country.name}</option>
                             ))}
                         </select>
+                        {selectedCountry && 
+                        <Link href={`/country/${selectedCountry.toLowerCase()}`}>
+                            <p className="text-sky-400">Visit country</p>
+                        </Link>}
                         <div>
                             {atractions.map((atraction, index) => (
                                 <div key={index} className="flex items-center my-4 w-full p-2 bg-[#11182e] rounded-md">
