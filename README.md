@@ -1,34 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Weather App
 
-## Getting Started
+> Weather App para la Rapid Api Hackathon de [midudev](https://github.com/midudev).
 
-First, run the development server:
+- Server Link: https://github.com/JRaOr/weather-be
+- Frontend Application Link: https://github.com/JRaOr/weather-fe
+- Live app: https://weather.gerardoraor.com
+##### Tecnologias utilizadas
 
-```bash
+- [NextJs](https://nextjs.org/) - The React Framework for Production!
+- [TailwindCSS](https://tailwindcss.com/) - Rapidly build modern websites without ever leaving your HTML.
+- [Flask](https://flask.palletsprojects.com/en/2.1.x/) - Flask is a lightweight WSGI web application framework.
+- [AWS](https://aws.amazon.com/es/) - Amazon Web Services, Route53, SNS, S3
+- [MongoAtlas](https://www.mongodb.com/) - Working with data doesn’t need to be hard
+- [Railway](https://railway.app/) - Railway is a deployment platform where you can provision infrastructure, develop with that infrastructure locally, and then deploy to the cloud.
+
+### Instalacion de Frontend
+
+Instalacion de dependencias!
+
+```sh
+git clone https://github.com/JRaOr/weather-fe
+cd weather-fe
+npm i
+```
+Crea un archivo .env en el directorio raiz, similar a .env.demo, agrega el api endpoint de la aplicacion en flask (ejemplo).
+```
+NEXT_PUBLIC_API_SERVER=http://localhost:5000
+```
+Ejecuta la aplicacion:
+```
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Instalacion de Backend
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Instalacion de dependencias!
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+```sh
+git clone https://github.com/JRaOr/weather-be
+cd weather-be
+pip install requirements.txt
+```
+Crea un archivo .env en el directorio raiz, similar a .env.demo, agrega las keys de cada recurso y despues ejecuta.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+python main.py
+```
