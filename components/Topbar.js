@@ -10,10 +10,10 @@ export default function Topbar ({ menuClick, bgClick, showBg, data }) {
                     <span className='text-sky-400'>
                         <MdOutlineShareLocation/>
                     </span>
-                    {data.location.name}, {data.location.country}
+                    {data?.location.name}, {data?.location.country}
                 </p>
             </>}
-            <div className={!showBg ? 'ml-auto text-blue-700':''}>
+            <div className={!showBg ? 'ml-auto text-white bg-[#000A] rounded-full items-center justify-center flex w-10 h-10':''}>
                 <button onClick={bgClick} className='text-xl'>
                     <BiPhotoAlbum/>
                 </button>

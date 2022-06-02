@@ -6,7 +6,8 @@ import Menu from "../../components/Menu";
 import SearchModal from "../../components/SearchModal";
 import Topbar from "../../components/Topbar";
 import { BsInfoCircle } from 'react-icons/bs';
-
+import { useSwipeable } from 'react-swipeable';
+import { useRef } from 'react';
 //Get server side props
 export async function getServerSideProps(context) {
     const { id } = context.query;
@@ -53,6 +54,7 @@ export default function Country ( { id, weather, country_data, atractions } ) {
     const [showAtractionInfo, setShowAtractionInfo] = useState(false);
     const [searchModal, setSearchModal] = useState(false);
     const [selectedAtraction, setSelectedAtraction] = useState(0);
+    const _movement = useRef(null)
     useEffect(() => { 
         if(!weather || !country_data) {
             router.push('/')
@@ -70,28 +72,67 @@ export default function Country ( { id, weather, country_data, atractions } ) {
         setSearchModal(!searchModal)
     }
 
+    function goRigth(){
+        if(atractions.length > 0 && selectedAtraction + 1 < atractions.length)
+            setSelectedAtraction(selectedAtraction + 1)
+    }
+    
+    function goLeft(){
+        if(atractions.length > 0 && selectedAtraction - 1 >= 0)
+            setSelectedAtraction(selectedAtraction - 1)
+    }
+
+    const handlers = useSwipeable({
+        onSwipedLeft: () => goRigth(),
+        onSwipedRight: () => goLeft(),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+    });
+
     return (
         <>
             {showLoading ? <Loading/>:
             <>
-                <main className={`w-[100vw] h-[100vh] overflow-hidden p-5 flex flex-col text-[#e0dddd] z-10 relative ${!location && 'bg-[#0b1b25] items-center justify-center'}`}>
+                <main {...handlers} className={`w-[100vw] h-[100vh] overflow-hidden p-5 flex flex-col text-[#e0dddd] z-10 relative ${!location && 'bg-[#0b1b25] items-center justify-center'}`}>
                     <Topbar bgClick={bgClick} showBg={showBg} data={weather}/>
                     {showBg &&
                         <>
-                            <section className='grow overflow-hidden py-5'>
-                                <div className='flex justify-between items-center'>
-                                    <div className='flex items-center flex-col '>
-                                        <img src={weather.current.condition.icon} alt='weather'/>
-                                        <p>{weather.current.condition.text}</p>
+                            <section ref={_movement} className='grow overflow-hidden py-5 relative flex items-center justify-center flex-col z-0'>
+                                <div className='flex justify-between items-center flex-col'>
+                                    <div className='flex items-center flex-col'>
+                                        <img src={weather?.current.condition.icon} alt='weather' className='w-[200px] h-[200px] object-contain'/>
                                     </div>
-                                    <h2 className='text-7xl'>
-                                        {parseInt(weather.current.temp_c)}°C
+                                    <h2 className='text-8xl'>
+                                        {parseInt(weather?.current.temp_c)}<span className='text-sky-500'>°C</span>
                                     </h2>
+                                    <p className='mt-5 font-semibold text-xl'>{weather?.current.condition.text}</p>
                                 </div>
-                                {(showAtractionInfo && atractions.length > 0) && 
-                                    <div className='my-5'>
-                                        <h3 className='font-bold text-lg'>{atractions[selectedAtraction].name}</h3>
+                                <div className='flex justify-around mt-5 w-full'>
+                                    <div className="flex flex-col items-center font-semibold">
+                                        <img src='/rain.svg' alt='humidity' className='object-contain w-[40px] h-[40px]'/>
+                                        <p>{weather?.current.humidity}%</p>
+                                        <p>Humidity</p>
+                                    </div>
+                                    <div className="flex flex-col items-center font-semibold">
+                                        <img src='/cloud.svg' alt='wind' className='object-contain w-[40px] h-[40px]'/>
+                                        <p>{weather?.current.cloud}%</p>
+                                        <p>Cloud</p>
+                                    </div>
+                                    <div className="flex flex-col items-center font-semibold">
+                                        <img src='/wind.png' alt='wind' className='object-contain w-[40px] h-[40px]'/>
+                                        <p>{weather?.current.wind_kph} km/h</p>
+                                        <p>Wind speed</p>
+                                    </div>
+                                </div>
+                                {showAtractionInfo && atractions.length > 0 && 
+                                    <div className='my-5 absolute bottom-0 left-0  z-10 bg-[#000000c9] p-4 rounded-md fade-animation'>
+                                        <h3 className='font-bold text-lg flex gap-2'>{atractions[selectedAtraction].name} 
+                                            <button className='text-sky-400 cursor-pointer' onClick={bgClick}>
+                                                (picture)
+                                            </button>
+                                        </h3>
                                         <p className='mt-5'>{atractions[selectedAtraction].description}</p>
+                                        
                                     </div>}
                             </section>
                             <div className=' flex w-full items-center justify-center gap-2 py-2 flex-col'>

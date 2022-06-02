@@ -16,7 +16,11 @@ export default function Menu( { toggleSearch }) {
             <button onClick={toggleSearch} className='menu-button'>
                 <AiOutlineSearch/>
             </button>
-            <button className='menu-button'>
+            <button onClick={()=>{
+                if(router.pathname !== '/interactions'){
+                    router.push('/interactions')
+                }
+            }} className={`menu-button ${window.location.pathname === '/interactions' ? 'text-sky-400':'text-white'}`}>
                 <HiOutlineUser/>
             </button>
             <button onClick={()=>{

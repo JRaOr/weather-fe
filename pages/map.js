@@ -52,23 +52,23 @@ export default function MapLocation () {
             <main className="w-[100vw] h-[100vh] relative"> 
                 {marker && 
                     <div className="w-[100vw] absolute top-0 left-0 z-10 p-5">
-                        <div className="w-full h-full bg-[#16182a] text-white p-4 rounded-md flex flex-col items-center relative">
+                        <div className="w-full h-full bg-[#16182a] text-white p-4 rounded-md flex flex-col items-center relative fade-animation">
                             <h2 className="text-xl font-semibold">{marker.location.name}, {marker.location.country}</h2>
                             <p>Time: {marker.location.localtime}</p>
+                            <h2 className="text-5xl font-semibold my-5">{parseInt(marker.current.temp_c)}°C</h2>
                             <div className="flex w-full items-center justify-around mt-5">
                                 <div className="flex flex-col items-center font-semibold gap-2">
                                     <img src={marker.current.condition.icon} alt="weather icon" className='object-contain w-[40px] h-[40px]'/>
                                     <p>{marker.current.condition.text}</p>
                                 </div>
                                 <div className="flex flex-col items-center font-semibold gap-2">
-                                    <img src='/humidity.png' alt='humidity' className='object-contain w-[40px] h-[40px]'/>
+                                    <img src='/rain.svg' alt='humidity' className='object-contain w-[40px] h-[40px]'/>
                                     <p>{marker.current.humidity}%</p>
                                 </div>
                                 <div className="flex flex-col items-center font-semibold gap-2">
                                     <img src='/wind.png' alt='wind' className='object-contain w-[40px] h-[40px]'/>
                                     <p>{marker.current.wind_kph}km/h</p>
                                 </div>
-                                <h2 className="text-5xl font-semibold">{parseInt(marker.current.temp_c)}°C</h2>
                             </div>
                             <button onClick={() => {
                                 router.push(`/country/${marker.location.country}?lat=${marker.location.lat}&lon=${marker.location.lon}`)

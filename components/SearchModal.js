@@ -43,7 +43,7 @@ export default function SearchModal({ onClose }) {
 
     return (
         <div className="modal-container">
-            <div className='modal-content text-white'>
+            <div className='modal-content text-white fade-animation'>
                 <div className='w-full sticky top-0 bg-[#16182a]'>
                     <div className='flex justify-between w-full text-xl mb-5'>
                         <p className='font-semibold'>Search for country</p>
@@ -54,6 +54,7 @@ export default function SearchModal({ onClose }) {
                     <input onChange={(e)=>{ setSearch(e.target.value) }} value={search} className='w-full mb-5 h-10 text-xl px-3 py-2 outline-none text-white bg-transparent border-[1px] rounded-md focus:border-2 focus:border-sky-600'  type={'text'} placeholder='Type a country...' />
                 </div>
                 <section className='w-full grow overflow-auto'>
+                    {countries.length === 0 && <p className='text-sm'>Tip: Find our iconic countries</p>}
                     {countries.length > 0 && <h2 className='text-xl mb-4'>Our Iconic Countries</h2>}
                     <ul>
                         {countries.map((country, index) => {
